@@ -117,9 +117,6 @@
 
     const int FieldCount = 3;
 
-    int player1WinCount = 0;
-    int player2WinCount = 0;
-
     protected override void OnInitialized()
     {
         InitializingGame();
@@ -133,7 +130,7 @@
         {
             field.Symbol = CurrentPlayer.Symbol;
             CurrentPlayer = players.First(x => x != CurrentPlayer);
-            CalculatePlayerWon();
+            var calculate = CalculatePlayerWon();
             //check if game is finished without a winner
             var both = MatchField.Where(x => x.WasClicked == true);
             if (both.Count() == MatchField.Count() && CalculatePlayerWon() != true)
@@ -142,7 +139,7 @@
             }
             //check if a player has won => lock the entire matchfield
 
-            if (CalculatePlayerWon() == true)
+            if (calculate == true)
             {
                 LockField(field);
             }
@@ -185,8 +182,7 @@
                 if (allRow1.Count() == FieldCount || allRow2.Count() == FieldCount)
                 {
                     playerWon = player.Symbol + " has won.";
-                    int index = players.IndexOf(player);
-                    players[index].WinCount += 1;
+                    player.WinCount += 1;
                     return true;
                 }
             }
@@ -199,8 +195,7 @@
             if (hasWonDiag1 || hasWonDiag2)
             {
                 playerWon = player.Symbol + " has won.";
-                int index = players.IndexOf(player);
-                players[index].WinCount += 1;
+                player.WinCount += 1;
                 return true;
             }
         }
