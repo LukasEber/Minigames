@@ -31,11 +31,11 @@
 
 <div class="buttons">
     <div class="wrapper">
-        <button class="reset">❌: Lorem ipsum</button>
+        <button class="reset">❌: @players[0].WinCount wins</button>
     </div>
 
     <div class="wrapper">
-        <button class="reset">🔵: Lorem ipsum</button>
+        <button class="reset">🔵: @players[1].WinCount wins</button>
     </div>
 </div>
 
@@ -117,8 +117,12 @@
 
     const int FieldCount = 3;
 
+    int player1WinCount = 0;
+    int player2WinCount = 0;
+
     protected override void OnInitialized()
     {
+        InitializingGame();
         NewGame();
         base.OnInitialized();
     }
@@ -138,12 +142,21 @@
             }
             //check if a player has won => lock the entire matchfield
 
-            // Test Commit
             if (CalculatePlayerWon() == true)
             {
                 LockField(field);
             }
         }
+    }
+
+    public void InitializingGame()
+    {
+        Player player1 = new Player("Player1", "❌");
+        Player player2 = new Player("Player2", "🔵");
+
+        players = new List<Player>();
+        players.Add(player1);
+        players.Add(player2);
     }
 
     public void NewGame()
@@ -156,13 +169,6 @@
                 MatchField.Add(new ElementOfMatchField(i, j));
             }
         }
-        Player player1 = new Player("Player1", "❌");
-        Player player2 = new Player("Player2", "🔵");
-
-        players = new List<Player>();
-        players.Add(player1);
-        players.Add(player2);
-
         CurrentPlayer = players[0];
         playerWon = null;
     }
@@ -179,6 +185,8 @@
                 if (allRow1.Count() == FieldCount || allRow2.Count() == FieldCount)
                 {
                     playerWon = player.Symbol + " has won.";
+                    int index = players.IndexOf(player);
+                    players[index].WinCount += 1;
                     return true;
                 }
             }
@@ -191,6 +199,8 @@
             if (hasWonDiag1 || hasWonDiag2)
             {
                 playerWon = player.Symbol + " has won.";
+                int index = players.IndexOf(player);
+                players[index].WinCount += 1;
                 return true;
             }
         }
