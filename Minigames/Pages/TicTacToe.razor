@@ -1,0 +1,210 @@
+﻿@page "/TicTacToe"
+@using System.Diagnostics
+
+<PageTitle>TicTacToe</PageTitle>
+
+<h1>TicTacToe</h1>
+
+<div class='grid'>
+    @if (MatchField != null)
+    {
+        @foreach (var field in MatchField)
+        {
+            <div>
+                <button class='space' @onclick="() => PrintSymbolOnButton(field)" disabled="@field.WasClicked">
+                    @field.Symbol
+                </button>
+            </div>
+        }
+    }
+</div>
+<div class="buttons">
+    <div class='wrapper'>
+        <button class='reset' @onclick="() => NewGame()">New Game</button>
+    </div>
+
+    <div class='wrapper'>
+        <button class='reset'>@playerWon</button>
+    </div>
+</div>
+
+
+<div class="buttons">
+    <div class="wrapper">
+        <button class="reset">❌: Lorem ipsum</button>
+    </div>
+
+    <div class="wrapper">
+        <button class="reset">🔵: Lorem ipsum</button>
+    </div>
+</div>
+
+
+
+
+<style>
+    .grid {
+        background-color: rgba(0,0,0,.2);
+        margin: 10px auto;
+        margin-bottom: 90px;
+        vertical-align: center;
+        width: 400px;
+        height: 400px;
+        display: grid;
+        justify-content: center;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template rows: 1fr 1fr 1fr;
+        grid-gap: 2px;
+        border-radius: 4px;
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 17px 50px;
+    }
+
+    .space {
+        width: 150px;
+        height: 150px;
+        background-color: slategray;
+        transition: background-color .5s;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+    }
+
+        .space:hover {
+            background-color: rgba(0,0,0,0);
+            transition: background-color: .5s;
+            cursor: pointer;
+            color: black;
+        }
+
+    .buttons {
+        display: flex;
+        justify-content: center;
+    }
+
+    .wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .reset {
+        width: 200px;
+        height: 60px;
+        margin: 5px;
+        background-color: slategray;
+        color: white;
+    }
+
+        .reset:hover {
+            background-color: rgba(0,0,0,0);
+            transition: background-color: .5s;
+            cursor: pointer;
+            color: black;
+        }
+</style>
+
+@code
+{
+
+    List<ElementOfMatchField> MatchField;
+
+    List<Player> players;
+
+    Player CurrentPlayer;
+
+    string playerWon;
+
+    const int FieldCount = 3;
+
+    protected override void OnInitialized()
+    {
+        NewGame();
+        base.OnInitialized();
+    }
+
+    public void PrintSymbolOnButton(ElementOfMatchField field)
+    {
+        if (CurrentPlayer != null)
+        {
+            field.Symbol = CurrentPlayer.Symbol;
+            CurrentPlayer = players.First(x => x != CurrentPlayer);
+            CalculatePlayerWon();
+            //check if game is finished without a winner
+            var both = MatchField.Where(x => x.WasClicked == true);
+            if (both.Count() == MatchField.Count() && CalculatePlayerWon() != true)
+            {
+                playerWon = " ❌ 🔵 ";
+            }
+            //check if a player has won => lock the entire matchfield
+            if (CalculatePlayerWon() == true)
+            {
+                LockField(field);
+            }
+        }
+    }
+
+    public void NewGame()
+    {
+        MatchField = new List<ElementOfMatchField>();
+        for (int i = 0; i < FieldCount; i++)
+        {
+            for (int j = 0; j < FieldCount; j++)
+            {
+                MatchField.Add(new ElementOfMatchField(i, j));
+            }
+        }
+        Player player1 = new Player("Player1", "❌");
+        Player player2 = new Player("Player2", "🔵");
+
+        players = new List<Player>();
+        players.Add(player1);
+        players.Add(player2);
+
+        CurrentPlayer = players[0];
+        playerWon = null;
+    }
+
+    public bool CalculatePlayerWon()
+    {
+        foreach (var player in players)
+        {
+            for (int i = 0; i < FieldCount; i++)
+            {
+                var allRow1 = MatchField.Where(x => x.Row == i && x.Symbol == player.Symbol);
+                var allRow2 = MatchField.Where(x => x.Column == i && x.Symbol == player.Symbol);
+
+                if (allRow1.Count() == FieldCount || allRow2.Count() == FieldCount)
+                {
+                    playerWon = player.Symbol + " has won.";
+                    return true;
+                }
+            }
+            var diagonale1 = MatchField.Where(x => (x.Row == 0 && x.Column == 0) || (x.Row == 1 && x.Column == 1) || (x.Row == 2 && x.Column == 2));
+            var diagonale2 = MatchField.Where(x => (x.Row == 0 && x.Column == 2) || (x.Row == 1 && x.Column == 1) || (x.Row == 2 && x.Column == 0));
+
+            bool hasWonDiag1 = diagonale1.All(x => x.Symbol == player.Symbol);
+            bool hasWonDiag2 = diagonale2.All(x => x.Symbol == player.Symbol);
+
+            if (hasWonDiag1 || hasWonDiag2)
+            {
+                playerWon = player.Symbol + " has won.";
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void LockField(ElementOfMatchField field)
+    {
+        var fieldNotFilled = MatchField.Where(x => string.IsNullOrEmpty(x.Symbol));
+        if (fieldNotFilled != null)
+        {
+            foreach (var element in fieldNotFilled)
+            {
+                element.Symbol = " ";
+            }
+        }
+    }
+}
+
