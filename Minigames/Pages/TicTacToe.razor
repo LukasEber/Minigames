@@ -31,11 +31,11 @@
 
 <div class="buttons">
     <div class="wrapper">
-        <button class="reset">❌: @players[0].WinCount wins</button>
+        <button class="reset">❌: @players[0].WinCount</button>
     </div>
 
     <div class="wrapper">
-        <button class="reset">🔵: @players[1].WinCount wins</button>
+        <button class="reset">🔵: @players[1].WinCount</button>
     </div>
 </div>
 
@@ -47,7 +47,6 @@
         background-color: rgba(0,0,0,.2);
         margin: 10px auto;
         margin-bottom: 90px;
-        vertical-align: center;
         width: 400px;
         height: 400px;
         display: grid;
@@ -117,6 +116,8 @@
 
     const int FieldCount = 3;
 
+    static string Count;
+
     protected override void OnInitialized()
     {
         InitializingGame();
@@ -143,7 +144,6 @@
             {
                 LockField(field);
             }
-
         }
     }
 
