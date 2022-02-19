@@ -9,7 +9,6 @@
         public string Symbol { get; set; }
 
         public bool WasClicked => !string.IsNullOrEmpty(Symbol);
-        public bool Test => !string.IsNullOrEmpty(Symbol);
 
         public ElementOfMatchField(int row, int column)
         {
