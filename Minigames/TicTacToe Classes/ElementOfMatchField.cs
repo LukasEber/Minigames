@@ -16,7 +16,5 @@
             this.Column = column;
 
         }
-
-
     }
 }
