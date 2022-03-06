@@ -1,16 +1,10 @@
-﻿using System.Diagnostics;
-
+﻿
 namespace Minigames
 
 {
     public class RandomWord
     {
-        public int Difficulty { get; set; }
-
-        public RandomWord(int difficulty)
-        {
-            this.Difficulty = difficulty;
-        }
+        public string Difficulty { get; set; }
 
         private List<string> wordsEasy = new List<string>
         {
