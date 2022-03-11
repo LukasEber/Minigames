@@ -1,47 +1,53 @@
-﻿@using Minigames
-
-@page "/Hangman"
+﻿ @using Minigames
+ @page "/Hangman"
 
 <PageTitle>Hangman</PageTitle>
-<div id="page">
-    <h1>Hangman</h1>
+<h1>Hangman</h1>
 
-    <div id="wrapper">
-        <div id="btn_start">
-            <button class="btn_gamestart" @onclick="() => StartEasyGame()">Easy</button>
-            <button class="btn_gamestart" @onclick="() => StartHardGame()">Hard</button>
+<div id="wrapper">
+    <div id="btn_letters">
+        <div id="btn_single">
+            @foreach (char letter in letters)
+            {
+                <button class='letters'>@letter</button>
+            }
         </div>
+    </div>
+    <div id="currentWord">
+        Current word: <br />
+        _ _ _ _ _ _ _ _
         <br />
-
-        <div id="btn_letters">
-            <div id="btn_single">
-                @foreach (char letter in letters)
-                {
-                    <button class='letters'>@letter</button>
-                }
-            </div>
-        </div>
-        <div id="currentWord">
-            Current word:
-            <br />
-        </div>
+    </div>
 
 
-        <div class="remainingAttempts">
-            Remaining attempts:
-            <br />
-        </div>
+    <div class="remainingAttempts">
+        Remaining attempts: <br />
+        ❌❌❌❌❌❌
+        <br />
+    </div>
 
-        <div id="wrongLetters">
-            Wrong letters:
-            <br />
-        </div>
+    <div id="wrongLetters">
+        Wrong letters: <br />
+        @foreach(var letter in wrongLetters)
+        {
+            
+            @letter.ToUpper() <tab></tab>
+            
+        }
+        <br />
     </div>
 </div>
 
 
 
 <style>
+    body {
+        background-color: #05121c;
+        color: white;
+        font-family: Calibri;
+        font-size: 14pt;
+    }
+
 
     h1 {
         display: none;
@@ -58,7 +64,6 @@
     #btn_start {
         grid-column: 1/3;
         grid-row: 1;
-        background-color: gray;
         text-align: center;
     }
 
@@ -69,11 +74,14 @@
         padding-left: 20px;
     }
 
+        .btn_gamestart:hover {
+        }
+
     #btn_letters {
         grid-column: 1/3;
         grid-row: 2;
-        background-color: gray;
         text-align: center;
+        margin-top: -30px;
     }
 
     #btn_single {
@@ -81,21 +89,33 @@
         grid-template-columns: 13% 13% 13% 13% 13% 13%;
         justify-content: center;
         align-content: center;
-        padding: 3px;
     }
+
+    button {
+        background-color: #495157;
+        color: white;
+    }
+
+        button:hover {
+            background-color: rgba(0,0,0,0);
+            transition: background-color: .5s;
+        }
+
+        button:visited{
+            background-color: #040c04;
+        }
 
     #currentWord {
         grid-column: 1 / 3;
         grid-row: 3;
-        background-color: gray;
         text-align: center;
         padding: 10px;
+        margin-top: -20px;
     }
 
     .remainingAttempts {
         grid-column: 1/3;
         grid-row: 4;
-        background-color: gray;
         text-align: center;
         padding: 10px;
     }
@@ -103,77 +123,11 @@
     #wrongLetters {
         grid-column: 1/3;
         grid-row: 5;
-        background-color: gray;
         text-align: center;
         padding: 10px;
     }
 
-    @@media(min-width: 640px) {
-        h1 {
-            display: inline;
-        }
-
-        .btn_gamestart {
-            padding-top: 5px;
-            padding-bottom: 5px;
-            padding-right: 20%;
-            padding-left: 20%;
-        }
-
-        #wrapper {
-            display: grid;
-            grid-template-columns: 50% 50%;
-            grid-template-rows: 50% 25% 25%;
-            column-gap: 10px;
-            row-gap: 20px;
-        }
-
-        #btn_start {
-            grid-column: 1;
-            grid-row: 1;
-            background-color: gray;
-            text-align: center;
-            padding: 10px;
-        }
-
-        #btn_letters {
-            grid-column: 2;
-            grid-row: 1;
-            background-color: gray;
-            text-align: center;
-        }
-
-        #btn_single {
-            display: grid;
-            grid-template-columns: 13% 13% 13% 13% 13% 13%;
-            justify-content: center;
-            align-content: center;
-            padding: 3px;
-        }
-
-        #currentWord {
-            grid-column: 1 / 3;
-            grid-row: 2;
-            background-color: gray;
-            text-align: center;
-            padding: 10px;
-        }
-
-        .remainingAttempts {
-            grid-column: 1;
-            grid-row: 3;
-            background-color: gray;
-            text-align: center;
-            padding: 10px;
-        }
-
-        #wrongLetters {
-            grid-column: 2;
-            grid-row: 3;
-            background-color: gray;
-            text-align: center;
-            padding: 10px;
-        }
+   
 
         @@media(min-width: 1200px) {
             #wrapper {

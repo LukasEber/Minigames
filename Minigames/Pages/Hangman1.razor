@@ -1,0 +1,60 @@
+﻿@using Minigames
+
+@page "/Hangman1"
+<PageTitle>Hangman</PageTitle>
+<h1>Hangman</h1>
+
+<div id="btn_select">
+    <div id="btn_one">
+        <a href="/Hangman"><button @onclick='() => StartEasyGame()'>Easy Game</button></a>
+    </div>
+   
+    
+    
+    <div id="btn_two">
+       <a href="/Hangman"><button @onclick="() => StartHardGame()">Hard Game</button></a>
+    </div>
+
+
+</div>
+
+
+
+<style>
+    body{
+        background-color: #05121c;
+        color: white;
+        font-family:Calibri;
+    }
+
+     #btn_select {
+        display: grid;
+        grid-template-columns: repeat(1fr);
+        grid-template-rows: repeat(6, 1fr);
+        grid-gap: 10px;
+}
+
+    #btn_one { 
+        grid-column: 1;
+        grid-row: 3;
+        margin: auto;
+    }
+    #btn_two { grid-column: 1;
+        grid-row: 5;
+        margin: auto;
+    }
+   button{
+       width: 300px;
+       height: 70px;
+       background-color: #495157;
+       color: white;
+   }
+
+   button:hover{
+       background-color: rgba(0,0,0,0);
+       transition: background-color: .5s;
+   }
+   
+    }
+   
+</style>
