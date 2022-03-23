@@ -5,6 +5,7 @@ namespace Minigames.Pages
     public partial class HangmanChooseGame
     {
 
+
         public void StartEasyGame()
         {
 
@@ -12,7 +13,7 @@ namespace Minigames.Pages
 
         public void StartHardGame()
         {
-           
+
         }
     }
 }
