@@ -4,7 +4,7 @@ namespace Minigames
 {
     public class RandomWord
     {
-        public string Difficulty { get; set; }
+      public string CurrentWord { get; set; }
 
         private List<string> wordsEasy = new List<string>
         {
@@ -27,6 +27,7 @@ namespace Minigames
             Random rnd = new Random();
             int index = rnd.Next(wordsEasy.Count());
             string randomWord = wordsEasy[index];
+            this.CurrentWord = randomWord;
         }
 
         public void GenerateDifficultRandomWord()
@@ -34,6 +35,7 @@ namespace Minigames
             Random rnd = new Random();
             int index = rnd.Next(wordsHard.Count());
             string randomWord = wordsHard[index];
+            this.CurrentWord = randomWord;
         }
     }
 }
