@@ -16,17 +16,16 @@ namespace Minigames
              "city", "name", "team", "minute", "idea", "kid", "body", "back", "parent",
              "face", "others", "level", "office", "door", "person", "art", "war", "history", "party", "result", "reason",
              "country",  "company", "government", "community", "health", "president", "question", "business", "service",
-             "information", "absolutely", "academic", "accomplish", "basically", "campaign", "environmental", "capability"
+             "information", "absolutely", "academic", "accomplish", "basically", "campaign", "environmental", "capability",
+             "accomodation", "world", "guest", "mother", "keyboard", "computer",
+
         };
 
-        
         public void GenerateRandomWord()
         {
             Random rnd = new Random();
             int index = rnd.Next(words.Count());
             this.CurrentWord = words[index];
         }
-
-        
     }
 }

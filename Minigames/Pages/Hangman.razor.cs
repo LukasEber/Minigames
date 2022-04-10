@@ -2,11 +2,15 @@
 {
     public partial class Hangman
     {
-        private string word;
-        private List<string> UnderscoreWord = new List<string>() { };
-        private List<char> letters = new List<char>() { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+        private string currentword;
+
+        private List<string> WordAsUnderscore = new List<string>() { };
+
+        private List<char> alphabet = new List<char>() { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+
         private List<char> wrongLetters = new List<char>() { };
-        private List<string> remainingAttempts = new List<string>() { "❌", "❌", "❌", "❌", "❌" };
+
+        private List<string> remainingAttempts = new List<string>() { "❌", "❌", "❌", "❌", "❌", "❌", "❌", "❌" };
 
         protected override void OnInitialized()
         {
@@ -14,85 +18,101 @@
             SetFirstLetter();
             base.OnInitialized();
         }
-        public void GetWord()
-        {
-            RandomWord randomword = new RandomWord();
-            randomword.GenerateRandomWord();
-            word = randomword.CurrentWord;
-
-        }
+        
         public void ReplaceLetterToUnderscore()
         {
             GetWord();
             int count = 0;
-            while (count < this.word.Length)
+            while (count < this.currentword.Length)
             {
-                UnderscoreWord.Add("▃");
+                WordAsUnderscore.Add("▃");
                 count++;
             }
         }
-        public void ReadLetter(char letter)
+
+        public void GetWord()
         {
-            if (word.Contains(letter))
-            {
-                var foundIndexes = new List<int>();
-                for (int i = 0; i < word.Length; i++)
-                {
-                    if (word[i] == letter)
-                        foundIndexes.Add(i);
-                }
-                foreach (var i in foundIndexes)
-                {
-                    UnderscoreWord[i] = letter.ToString();
-                }
-                PlayerWon();
-            }
-            else
-            {
-                if (!wrongLetters.Contains(letter))
-                {
-                    remainingAttempts.RemoveAt(1);
-                    AddWrongLetter(letter);
-                    PlayerLost();
-                }
-            }
-        }
-        public void PlayerWon()
-        {
-            if (!UnderscoreWord.Contains("▃"))
-            {
-                remainingAttempts.Clear();
-                remainingAttempts.Add("✯ You won! ✯");
-                letters.Clear();
-            }
-        }
-        public void NewGame()
-        {
-            wrongLetters.Clear();
-            UnderscoreWord.Clear();
-            List<string> remaining = new List<string>() { "❌", "❌", "❌", "❌", "❌" };
-            List<char> let = new List<char>() { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
-            remainingAttempts = remaining;
-            letters = let;
-            OnInitialized();
-        }
-        public void PlayerLost()
-        {
-            if (wrongLetters.Count == 4)
-            {
-                remainingAttempts.Clear();
-                remainingAttempts.Add($" You lost!  the word was {word}.");
-                letters.Clear();
-            }
+            RandomWord randomword = new RandomWord();
+            randomword.GenerateRandomWord();
+            currentword = randomword.CurrentWord;
+
         }
         public void SetFirstLetter()
         {
-            int index = word.IndexOf(word.First());
-            UnderscoreWord[0] = word[index].ToString();
+            int index = currentword.IndexOf(currentword.First());
+            WordAsUnderscore[0] = currentword[index].ToString();
         }
-        public void AddWrongLetter(char letter)
+        public void ReadLetter(char letter)
+        {
+            if (currentword.Contains(letter))
+            {
+                CurrentWordContainsUserInput(letter);
+            }
+            else
+            {
+                CurrentWordDoesNotContainUnserInput(letter);
+            }
+        }
+
+        public void CurrentWordContainsUserInput(char letter)
+        {
+            var foundIndexes = new List<int>();
+            for (int i = 0; i < currentword.Length; i++)
+            {
+                if (currentword[i] == letter)
+                    foundIndexes.Add(i);
+            }
+            foreach (var i in foundIndexes)
+            {
+                WordAsUnderscore[i] = letter.ToString();
+            }
+            PlayerWon();
+        }
+
+        public void CurrentWordDoesNotContainUnserInput(char letter)
+        {
+            if (!wrongLetters.Contains(letter))
+            {
+                remainingAttempts.RemoveAt(1);
+                AddWrongLetterToList(letter);
+                PlayerLost();
+            }
+        }
+        public void AddWrongLetterToList(char letter)
         {
             wrongLetters.Add(letter);
         }
+
+        public void PlayerWon()
+        {
+            if (!WordAsUnderscore.Contains("▃"))
+            {
+                remainingAttempts.Clear();
+                remainingAttempts.Add("✯ You won! ✯");
+                alphabet.Clear();
+            }
+        }
+
+        public void PlayerLost()
+        {
+            if (wrongLetters.Count == 7)
+            {
+                remainingAttempts.Clear();
+                remainingAttempts.Add($" You lost! The word was {currentword}.");
+                alphabet.Clear();
+            }
+        }
+
+        public void NewGame()
+        {
+            wrongLetters.Clear();
+            WordAsUnderscore.Clear();
+            List<string> remaining = new List<string>() { "❌", "❌", "❌", "❌", "❌", "❌", "❌", "❌" };
+            List<char> letters = new List<char>() { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+            remainingAttempts = remaining;
+            alphabet = letters;
+            OnInitialized();
+        }
     }
 }
+

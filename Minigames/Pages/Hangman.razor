@@ -7,7 +7,7 @@
 <div id="wrapper">
     <div id="btn_letters">
         <div id="btn_single">
-            @foreach (var letter in letters)
+            @foreach (var letter in alphabet)
             {
                 <button class='letters' @onclick="() => ReadLetter(letter)" >@letter</button>
             }
@@ -17,9 +17,9 @@
     <div id="currentWord">
         Your word: <br />
         <br />
-        @foreach (var letter in UnderscoreWord)
+        @foreach (var underscore in WordAsUnderscore)
         {
-            @letter  <tab></tab>
+            @underscore  <tab></tab>
         }
         <br />
     </div>
@@ -129,7 +129,7 @@
         font-size: 14pt;
     }
 
-    @@media(min-width: 1200px) {
+    @@media(min-width: 900px) {
         #wrapper {
             display: grid;
             grid-template-columns: 50% 50%;

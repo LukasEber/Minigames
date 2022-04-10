@@ -8,11 +8,9 @@
 
         Player CurrentPlayer;
 
-        string playerWon;
+        string? playerWon;
 
         const int FieldCount = 3;
-
-        static string Count;
 
         protected override void OnInitialized()
         {
@@ -28,17 +26,30 @@
                 field.Symbol = CurrentPlayer.Symbol;
                 CurrentPlayer = players.First(x => x != CurrentPlayer);
                 var calculate = CalculatePlayerWon();
+
                 //check if game is finished without a winner
                 var both = MatchField.Where(x => x.WasClicked == true);
                 if (both.Count() == MatchField.Count() && CalculatePlayerWon() != true)
                 {
                     playerWon = " ❌ 🔵 ";
                 }
-                //check if a player has won => lock the entire matchfield
 
+                //check if a player has won => lock the entire matchfield
                 if (calculate == true)
                 {
                     LockField(field);
+                }
+            }
+        }
+
+        public void LockField(ElementOfMatchField field)
+        {
+            var fieldNotFilled = MatchField.Where(x => string.IsNullOrEmpty(x.Symbol));
+            if (fieldNotFilled != null)
+            {
+                foreach (var element in fieldNotFilled)
+                {
+                    element.Symbol = " ";
                 }
             }
         }
@@ -71,27 +82,22 @@
         {
             foreach (var player in players)
             {
-                for (int i = 0; i < FieldCount; i++)
+                if(CalculateRowsAndColumns(player)) { return true; }
+                if(CalculateDiagonals(player)) { return true; }
+            }
+            return false;
+        }
+
+        public bool CalculateRowsAndColumns(Player player)
+        {
+            for (int i = 0; i < FieldCount; i++)
+            {
+                var allRows = MatchField.Where(x => x.Row == i && x.Symbol == player.Symbol);
+                var allColumns = MatchField.Where(x => x.Column == i && x.Symbol == player.Symbol);
+
+                if (allRows.Count() == FieldCount || allColumns.Count() == FieldCount)
                 {
-                    var allRow1 = MatchField.Where(x => x.Row == i && x.Symbol == player.Symbol);
-                    var allRow2 = MatchField.Where(x => x.Column == i && x.Symbol == player.Symbol);
-
-                    if (allRow1.Count() == FieldCount || allRow2.Count() == FieldCount)
-                    {
-                        playerWon = player.Symbol + " has won.";
-                        player.WinCount += 1;
-                        return true;
-                    }
-                }
-                var diagonale1 = MatchField.Where(x => (x.Row == 0 && x.Column == 0) || (x.Row == 1 && x.Column == 1) || (x.Row == 2 && x.Column == 2));
-                var diagonale2 = MatchField.Where(x => (x.Row == 0 && x.Column == 2) || (x.Row == 1 && x.Column == 1) || (x.Row == 2 && x.Column == 0));
-
-                bool hasWonDiag1 = diagonale1.All(x => x.Symbol == player.Symbol);
-                bool hasWonDiag2 = diagonale2.All(x => x.Symbol == player.Symbol);
-
-                if (hasWonDiag1 || hasWonDiag2)
-                {
-                    playerWon = player.Symbol + " has won.";
+                    playerWon = $"{player.Symbol} has won";
                     player.WinCount += 1;
                     return true;
                 }
@@ -99,16 +105,21 @@
             return false;
         }
 
-        public void LockField(ElementOfMatchField field)
+        public bool CalculateDiagonals(Player player)
         {
-            var fieldNotFilled = MatchField.Where(x => string.IsNullOrEmpty(x.Symbol));
-            if (fieldNotFilled != null)
+            var diagonale1 = MatchField.Where(x => (x.Row == 0 && x.Column == 0) || (x.Row == 1 && x.Column == 1) || (x.Row == 2 && x.Column == 2));
+            var diagonale2 = MatchField.Where(x => (x.Row == 0 && x.Column == 2) || (x.Row == 1 && x.Column == 1) || (x.Row == 2 && x.Column == 0));
+
+            bool hasWonDiag1 = diagonale1.All(x => x.Symbol == player.Symbol);
+            bool hasWonDiag2 = diagonale2.All(x => x.Symbol == player.Symbol);
+
+            if (hasWonDiag1 || hasWonDiag2)
             {
-                foreach (var element in fieldNotFilled)
-                {
-                    element.Symbol = " ";
-                }
+                playerWon = $"{player.Symbol} has won";
+                player.WinCount += 1;
+                return true;
             }
+            return false;
         }
     }
 }
