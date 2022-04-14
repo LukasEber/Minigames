@@ -25,4 +25,4 @@ The code can be found at Minigames > Pages
 Code behind files: {name of the game}.razor.cs  
 html/css: {name of the game}.razor  
 
-related classes can be found at Minigames > {game of the game} classes/enums
+related classes can be found at Minigames > {name of the game} classes/enums
