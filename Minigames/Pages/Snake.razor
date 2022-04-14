@@ -1,21 +1,132 @@
 ﻿@page "/Snake"
+@using Minigames.SnakeEnums
 
 <PageTitle>Snake</PageTitle>
 
 <h1>Snake</h1>
 
-<div class="parent">
-    
+<div @ref="gameContainer" tabindex="0" @onkeydown="KeyboardEventHandler">
+    @if (gameOver == false)
+    {
+        <h2>Score: @score</h2>
+
+        <div class="game-board">
+            @for (var i = 0; i < 40; i++)
+            {
+                <div class="game-board-row">
+                    @for (var j = 0; j < 40; j++)
+                    {
+                        var boardState = board[i][j];
+                        if (boardState == null)
+                        {
+                            <span class="game-board-cell">&nbsp;</span>
+                        }
+                        else if (boardState == BoardState.Snake)
+                        {
+                            <span class="game-board-cell snake">&nbsp;</span>
+                        }
+                        else if (boardState == BoardState.Food)
+                        {
+                            <span class="game-board-cell food">&nbsp;</span>
+                        }
+                    }
+                </div>
+            }
+        </div>
+
+        <button class="btn_changeDirection" @onclick="() => { ChangeDirection(Direction.Right); }">Go Right</button>
+        <button class="btn_changeDirection" @onclick="() => { ChangeDirection(Direction.Left); }">Go Left</button>
+        <button class="btn_changeDirection" @onclick="() => { ChangeDirection(Direction.Up); }">Go Up</button>
+        <button class="btn_changeDirection" @onclick="() => { ChangeDirection(Direction.Down); }">Go Down</button>
+    }
+    else
+    {
+        if (gameOver == true)
+        {
+            <p>Game over!</p>
+            <p>Score: @score</p>
+        }
+        <button class="btn_gamestart" @onclick="async () => { await Start(); } ">Start Game</button>
+    }
 </div>
+
+
+
+
+
 <style>
     body {
         background-color: #05121c;
         color: white;
         font-family: Calibri;
+        font-size: 16pt;
     }
 
-    @@media(min-width. 1200px;) {
-        
-        
+    .game-board {
+        background: grey;
+        height: 400px;
+        width: 400px;
+        margin: 0;
+        padding: 0;
     }
+
+    button {
+        background-color: #495157;
+        color: white;
+    }
+
+        button:hover {
+            background-color: rgba(0,0,0,0);
+            transition: background-color: .5s;
+        }
+
+        button:visited {
+            background-color: #040c04;
+        }
+
+    .btn_changeDirection {
+        font-size: 13pt;
+        margin: auto;
+        padding: 16px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        margin-left: 0.3%;
+        margin-top: 10px;
+    }
+
+    .btn_gamestart {
+        text-align: center;
+        align-items: center;
+        font-family: Verdana;
+        font-size: 12pt;
+        display: flex;
+        justify-content: center;
+        margin: auto;
+        margin-top: 15%;
+        width: 300px;
+        height: 150px;
+    }
+
+    .game-board-row {
+        height: 10px;
+        width: 400px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .game-board-cell {
+        display: inline-block;
+        background: black;
+        height: 10px;
+        width: 10px;
+    }
+
+    .snake {
+        background: green !important;
+    }
+
+    .food {
+        background: white !important;
+    }
+
 </style>
