@@ -23,8 +23,8 @@ namespace Minigames
 
         public void GenerateRandomWord()
         {
-            var inde = new Random().Next(words.Count());
-            this.CurrentWord = words[inde];
+            var index = new Random().Next(words.Count());
+            this.CurrentWord = words[index];
         }
     }
 }
