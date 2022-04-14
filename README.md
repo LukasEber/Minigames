@@ -19,7 +19,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 Please make sure to update tests as appropriate.
 
 ## Project Structure
-The code of the games can be found at Minigames > Pages   
+The code can be found at Minigames > Pages   
 Code behind files: {name of the game}.razor.cs  
 html/css: {name of the game}.razor  
 
