@@ -1,5 +1,5 @@
 # Minigames
-A C# blazor project which contains different minigames
+A C# Blazor project containing various minigames
 
 # Blazor
 
