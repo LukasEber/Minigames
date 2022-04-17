@@ -86,6 +86,7 @@
                 PlayerLost();
             }
         }
+
         private void AddWrongLetterToList(char letter)
         {
             wrongLetters.Add(letter);
