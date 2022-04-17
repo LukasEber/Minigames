@@ -4,7 +4,7 @@
     {
         private string currentword;
 
-        private List<string> WordAsUnderscore = new List<string>() { };
+        private List<string> wordAsUnderscore = new List<string>() { };
 
         private List<char> alphabet = new List<char>() { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 
@@ -14,7 +14,7 @@
 
         private bool gameover = false;
 
-        private string? LostMessage;
+        private string? lostMessage;
 
         protected override void OnInitialized()
         {
@@ -29,7 +29,7 @@
             int count = 0;
             while (count < this.currentword.Length)
             {
-                WordAsUnderscore.Add("▃");
+                wordAsUnderscore.Add("▃");
                 count++;
             }
         }
@@ -43,8 +43,7 @@
         }
         private void SetFirstLetter()
         {
-            int index = currentword.IndexOf(currentword.First());
-            WordAsUnderscore[0] = currentword[index].ToString();
+            wordAsUnderscore[0] = currentword[0].ToString();
         }
         private void ReadLetter(char letter)
         {
@@ -68,7 +67,7 @@
             }
             foreach (var i in foundIndexes)
             {
-                WordAsUnderscore[i] = letter.ToString();
+                wordAsUnderscore[i] = letter.ToString();
             }
             PlayerWon();
         }
@@ -89,7 +88,7 @@
 
         private void PlayerWon()
         {
-            if (!WordAsUnderscore.Contains("▃"))
+            if (!wordAsUnderscore.Contains("▃"))
             {
                 remainingAttempts.Clear();
                 remainingAttempts.Add("✯ You won! ✯");
@@ -103,14 +102,14 @@
             {
                 gameover = true;
                 remainingAttempts.Clear();
-                LostMessage = $" You lost! The word was {currentword}.";
+                lostMessage = $" You lost! The word was {currentword}.";
             }
         }
 
         private void NewGame()
         {
             wrongLetters.Clear();
-            WordAsUnderscore.Clear();
+            wordAsUnderscore.Clear();
             List<string> remaining = new List<string>() { "❌", "❌", "❌", "❌", "❌", "❌", "❌", "❌" };
             gameover = false;
             remainingAttempts = remaining;

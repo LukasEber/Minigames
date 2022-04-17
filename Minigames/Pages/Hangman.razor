@@ -19,7 +19,7 @@
         <div id="currentWord">
             Your word: <br />
             <br />
-            @foreach (var underscore in WordAsUnderscore)
+            @foreach (var underscore in wordAsUnderscore)
             {
                 @underscore  <tab></tab>
             }
@@ -52,7 +52,7 @@
 else
 {
     <div id="playerLostPage">
-        <div id="btnLostmessage">@LostMessage</div>
+        <div id="btnLostmessage">@lostMessage</div>
         <div>
             <button id="btnNewGame" @onclick="() => NewGame()">New Game</button>
         </div>
