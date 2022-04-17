@@ -10,7 +10,7 @@
 
         private List<char> wrongLetters = new List<char>() { };
 
-        private List<string> remainingAttempts = new List<string>() { "❌", "❌", "❌", "❌", "❌", "❌", "❌", "❌" };
+        private List<string>? remainingAttempts = new List<string>() { "❌", "❌", "❌", "❌", "❌", "❌", "❌", "❌" };
 
         private bool gameover = false;
 
@@ -22,7 +22,7 @@
             SetFirstLetter();
             base.OnInitialized();
         }
-        
+
         private void ReplaceLetterToUnderscore()
         {
             GetWord();
@@ -45,6 +45,7 @@
         {
             GetAllIndexes(currentword[0]);
         }
+
         private void GetAllIndexes(char letter)
         {
             var foundIndexes = new List<int>();
@@ -81,9 +82,17 @@
         {
             if (!wrongLetters.Contains(letter))
             {
-                remainingAttempts.RemoveAt(1);
-                AddWrongLetterToList(letter);
-                PlayerLost();
+                try
+                {
+                    remainingAttempts.RemoveAt(1);
+                    AddWrongLetterToList(letter);
+                    PlayerLost();
+                }
+                catch (Exception ex)
+                {
+                    AddWrongLetterToList(letter);
+                    PlayerLost();
+                }
             }
         }
 
@@ -104,7 +113,8 @@
 
         private void PlayerLost()
         {
-            if (wrongLetters.Count == 7)
+
+            if (wrongLetters.Count == 8)
             {
                 gameover = true;
                 remainingAttempts.Clear();
