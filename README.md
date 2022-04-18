@@ -8,7 +8,7 @@ Blazor is a C# framework to create web apps
 ## Installation
 
 Clone the repository in Visual Studio and run it  
-https://github.com/lukaseber9/Minigames.git
+https://github.com/LukasEber/Minigames.git
 
 ## Usage
 
